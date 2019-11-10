@@ -10,7 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/mall': {
+        target: 'http://localhost:3000',//后端接口地址
+        changeOrigin: true,//是否允许跨越
+        pathRewrite: {
+            '^/mall': '',//重写,
+        }
+     }
+
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

@@ -34,13 +34,31 @@
                 <img v-lazy="adBanner" width="100%" />
             </div>
         </div>
-
+        <!--商品推荐-->
+        <div class="recommend-area">
+            <div class="recommend-title">
+                商品推荐
+            </div>
+            <div class="recommend-body">
+                   <swiper >
+                   <swiper-slide v-for="(item,index) in recommendGoods " :key="index" >
+                       <div class="recommend-item">
+                           <img :src="item.image" width="80%">
+                           <div>{{item.goodsName}}</div>
+                           <div>￥{{item.price}}</div>
+                       </div>
+                   </swiper-slide> 
+                </swiper>
+            </div>
+        </div>
 
     </div>
 </template>
 
 <script>
-    import axios from 'axios'
+    import { getIndex } from "@/api/index.js";
+    import 'swiper/dist/css/swiper.css'
+    import { swiper, swiperSlide } from 'vue-awesome-swiper'
     export default {
         data() {
             return {
@@ -53,25 +71,30 @@
                  ],
                 category:[],
                 adBanner:'',
+                recommendGoods:[],
 
             }
         },
     created(){
-        axios({
-            url: 'https://www.easy-mock.com/mock/5ae2eeb23fbbf24d8cd7f0b6/SmileVue/index',
-            method: 'get',
+     getIndex()
+        .then(res => {
+          if (res.status === 200) {
+            let getData = JSON.parse(res.data.data);
+            res.data.data = getData.data
+            this.bannerPicArray = res.data.data.slides;
+            this.category = res.data.data.category;
+            this.adBanner = res.data.data.advertesPicture.PICTURE_ADDRESS;
+            this.recommendGoods = res.data.data.recommend;
+        
+          }
         })
-        .then(response => {
-            console.log(response)
-            if(response.status==200){
-                this.category=response.data.data.category;
-                this.adBanner = response.data.data.advertesPicture.PICTURE_ADDRESS;
-                this.bannerPicArray= response.data.data.slides;
-            }
-        })
-        .catch((error) => {   
-
-        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+     components: {
+        swiper,
+        swiperSlide
     }
 
 
@@ -137,6 +160,26 @@
       font-size: 12px;
       text-align: center;
   }
+
+ .recommend-area{
+        background-color: #fff;
+        margin-top:.3rem;
+    }
+ .recommend-title{
+        border-bottom:1px solid #eee;
+        font-size:14px;
+        padding:.2rem;
+        color:#e5017d;
+    }
+   .recommend-body{
+        border-bottom:1px solid #eee;
+    }
+    .recommend-item{
+        width:99%;
+        border-right:1px solid #eee;
+        font-size:12px;
+        text-align: center;
+    }
 
 
 </style>
