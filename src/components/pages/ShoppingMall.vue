@@ -13,30 +13,69 @@
                 </van-col>
             </van-row>
         </div>
-        <!--swipwer area-->
+        <!--轮播图-->
         <div class="swiper-area">
-            <van-swipe :autoplay="1000">
+            <van-swipe :autoplay="3000">
                 <van-swipe-item v-for="(banner,index) in bannerPicArray" :key="index">
-                    <img v-lazy="banner.imageUrl" width="100%"/>
+                    <img v-lazy="banner.image" width="100%"/>
                 </van-swipe-item>
             </van-swipe>
         </div>
+        <!-- 分类列表 -->
+        <div class="type-bar">
+            <div  v-for="(cate,index) in category" :key="index" >
+                    <img v-lazy="cate.image" width="90%" />
+                    <span>{{cate.mallCategoryName}}</span> 
+            </div>
+        </div>
+        <!--广告条-->
+        <div class="ad-banner">
+            <div>
+                <img v-lazy="adBanner" width="100%" />
+            </div>
+        </div>
+
+
     </div>
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         data() {
             return {
                 msg: "shopping mall",
                 locationIcon: require('../../assets/images/location.png'),
                 bannerPicArray:[
-                {imageUrl:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175111_9509.jpg'},
-                {imageUrl:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175040_1780.jpg'},
-                {imageUrl:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175142_6947.jpg'},
-            ]
+                {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175111_9509.jpg'},
+                {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175040_1780.jpg'},
+                {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175142_6947.jpg'},
+                 ],
+                category:[],
+                adBanner:'',
+
             }
         },
+    created(){
+        axios({
+            url: 'https://www.easy-mock.com/mock/5ae2eeb23fbbf24d8cd7f0b6/SmileVue/index',
+            method: 'get',
+        })
+        .then(response => {
+            console.log(response)
+            if(response.status==200){
+                this.category=response.data.data.category;
+                this.adBanner = response.data.data.advertesPicture.PICTURE_ADDRESS;
+                this.bannerPicArray= response.data.data.slides;
+            }
+        })
+        .catch((error) => {   
+
+        })
+    }
+
+
+
     }
 </script>
 
@@ -84,7 +123,20 @@
         max-height:15rem;
         overflow: hidden;
     }
-
+.type-bar{
+      background-color: #fff;
+      margin:0 .3rem .3rem .3rem;
+      border-radius: .3rem;
+      font-size:14px;
+      display: flex;
+      flex-direction:row;
+      flex-wrap:nowrap;
+  }
+  .type-bar div{
+      padding: .3rem;
+      font-size: 12px;
+      text-align: center;
+  }
 
 
 </style>
