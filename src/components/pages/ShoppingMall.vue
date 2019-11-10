@@ -40,7 +40,7 @@
                 商品推荐
             </div>
             <div class="recommend-body">
-                   <swiper >
+                   <swiper :options="swiperOption" >
                    <swiper-slide v-for="(item,index) in recommendGoods " :key="index" >
                        <div class="recommend-item">
                            <img :src="item.image" width="80%">
@@ -51,7 +51,9 @@
                 </swiper>
             </div>
         </div>
-
+<swiperDefault></swiperDefault>
+<swiperDefault3></swiperDefault3>
+<swiperText></swiperText>
     </div>
 </template>
 
@@ -59,16 +61,23 @@
     import { getIndex } from "@/api/index.js";
     import 'swiper/dist/css/swiper.css'
     import { swiper, swiperSlide } from 'vue-awesome-swiper'
+    import swiperDefault from '../swiper/swiperDefault'
+    import swiperDefault3 from '../swiper/swiperDefault3'
+    import swiperText from '../swiper/swiperText'
     export default {
         data() {
             return {
+                 swiperOption:{
+                    slidesPerView:3
+                },
                 msg: "shopping mall",
                 locationIcon: require('../../assets/images/location.png'),
                 bannerPicArray:[
-                {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175111_9509.jpg'},
-                {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175040_1780.jpg'},
-                {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175142_6947.jpg'},
-                 ],
+                // {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175111_9509.jpg'},
+                // {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175040_1780.jpg'},
+                // {image:'http://images.baixingliangfan.cn/advertesPicture/20180407/20180407175142_6947.jpg'},
+                //  
+                ],
                 category:[],
                 adBanner:'',
                 recommendGoods:[],
@@ -94,7 +103,10 @@
     },
      components: {
         swiper,
-        swiperSlide
+        swiperSlide,
+        swiperDefault,
+        swiperDefault3,
+        swiperText
     }
 
 
@@ -143,7 +155,7 @@
 
 .swiper-area{
         clear:both;
-        max-height:15rem;
+        max-height:10rem;
         overflow: hidden;
     }
 .type-bar{
